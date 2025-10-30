@@ -5,73 +5,28 @@
   <title>Big Fish Eats Little Fish Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <style>
-    :root {
-      --ui-bg: rgba(0,0,0,0.35);
-      --ui-text: #eaf7ff;
-      --accent: #4ad2ff;
-      --accent2: #ffb86b;
-      --good: #84ffba;
-      --bad: #ff8f8f;
-    }
-    html, body {
-      margin: 0;
-      height: 100%;
-      overflow: hidden;
-      background: linear-gradient(180deg, #0e2747 0%, #07203a 45%, #03182a 100%);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--ui-text);
-      user-select: none;
-    }
-    #gameCanvas { position: absolute; inset: 0; width: 100vw; height: 100vh; display: block; }
-    #uiBar {
-      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 10px; align-items: center; padding: 8px 12px;
-      background: var(--ui-bg); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 12px; backdrop-filter: blur(6px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); z-index: 5;
-    }
-    .pill { padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); font-weight: 600; font-size: 14px; letter-spacing: 0.2px; white-space: nowrap; }
-    .btn { cursor: pointer; transition: transform 0.08s ease, background 0.2s ease; background: rgba(255,255,255,0.08); }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-    #startOverlay {
-      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-      background: radial-gradient(1200px 1200px at 50% 40%, rgba(79,144,255,0.08), transparent 60%); z-index: 10; padding: 24px; text-align: center;
-    }
-    #startCard { background: rgba(15,27,50,0.65); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 22px 20px; max-width: 700px; box-shadow: 0 12px 40px rgba(0,0,0,0.35); }
-    #startTitle { font-size: 28px; font-weight: 800; letter-spacing: 0.4px; margin-bottom: 8px; }
-    #startSubtitle { opacity: 0.85; font-size: 15px; margin-bottom: 16px; line-height: 1.45; }
-    #playBtn {
-      font-size: 18px; padding: 12px 18px; border-radius: 12px; background: linear-gradient(135deg, #3cc6ff, #1aa1e6);
-      color: #052033; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 10px 24px rgba(0,168,255,0.35);
-    }
-    #playBtn:hover { filter: brightness(1.04); }
-    #playBtn:active { transform: translateY(1px); }
-    #help { font-size: 13px; opacity: 0.9; margin-top: 12px; line-height: 1.5; color: #d9efff; }
-    #statusPill {
-      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
-      background: var(--ui-bg); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 6px 12px; color: #cfeaff; font-size: 13px; letter-spacing: 0.3px; z-index: 6; text-align: center;
-    }
-    #previewWrap { position: absolute; right: 16px; bottom: 16px; z-index: 6; display: none; flex-direction: column; align-items: end; gap: 6px; }
-    #preview {
-      width: 240px; height: 180px; object-fit: cover; transform: scaleX(-1);
-      border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-    }
-    #previewNote { font-size: 11px; opacity: 0.75; background: rgba(0,0,0,0.35); padding: 4px 8px; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; }
-    .hidden { display: none !important; }
-
-    /* Decorative ambient bubbles */
-    .bubble {
-      position: absolute; bottom: -40px; width: 12px; height: 12px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 25%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%), rgba(255,255,255,0.12);
-      filter: blur(0.2px); animation: rise 9s linear infinite; pointer-events: none;
-    }
-    @keyframes rise { 0% { transform: translateY(0) translateX(0) scale(0.9); opacity: 0.0; } 10% { opacity: 0.55; } 100% { transform: translateY(-120vh) translateX(-20px) scale(1.15); opacity: 0; } }
-
-    @media (max-width: 680px) {
-      #preview { width: 180px; height: 132px; }
-      #startTitle { font-size: 22px; }
-      #startSubtitle { font-size: 14px; }
-    }
+    :root { --ui-bg: rgba(0,0,0,0.35); --ui-text: #eaf7ff; --accent: #4ad2ff; --accent2: #ffb86b; --good: #84ffba; --bad: #ff8f8f; }
+    html, body { margin:0; height:100%; overflow:hidden; background:linear-gradient(180deg,#0e2747 0%,#07203a 45%,#03182a 100%); font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--ui-text); user-select:none; }
+    #gameCanvas { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+    #uiBar { position:absolute; top:14px; left:50%; transform:translateX(-50%); display:flex; gap:10px; align-items:center; padding:8px 12px; background:var(--ui-bg); border:1px solid rgba(255,255,255,0.12); border-radius:12px; backdrop-filter:blur(6px); box-shadow:0 8px 24px rgba(0,0,0,0.25); z-index:5; }
+    .pill { padding:6px 10px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); font-weight:600; font-size:14px; letter-spacing:0.2px; white-space:nowrap; }
+    .btn { cursor:pointer; transition:transform .08s ease, background .2s ease; background:rgba(255,255,255,0.08); }
+    .btn:hover { transform:translateY(-1px); } .btn:active { transform:translateY(0); }
+    #startOverlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; background:radial-gradient(1200px 1200px at 50% 40%, rgba(79,144,255,0.08), transparent 60%); z-index:10; padding:24px; text-align:center; }
+    #startCard { background:rgba(15,27,50,0.65); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:22px 20px; max-width:700px; box-shadow:0 12px 40px rgba(0,0,0,0.35); }
+    #startTitle { font-size:28px; font-weight:800; letter-spacing:0.4px; margin-bottom:8px; }
+    #startSubtitle { opacity:0.85; font-size:15px; margin-bottom:16px; line-height:1.45; }
+    #playBtn { font-size:18px; padding:12px 18px; border-radius:12px; background:linear-gradient(135deg,#3cc6ff,#1aa1e6); color:#052033; font-weight:800; border:none; cursor:pointer; box-shadow:0 10px 24px rgba(0,168,255,0.35); }
+    #playBtn:hover { filter:brightness(1.04); } #playBtn:active { transform:translateY(1px); }
+    #help { font-size:13px; opacity:0.9; margin-top:12px; line-height:1.5; color:#d9efff; }
+    #statusPill { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); background:var(--ui-bg); border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:6px 12px; color:#cfeaff; font-size:13px; letter-spacing:0.3px; z-index:6; text-align:center; }
+    #previewWrap { position:absolute; right:16px; bottom:16px; z-index:6; display:none; flex-direction:column; align-items:end; gap:6px; }
+    #preview { width:240px; height:180px; object-fit:cover; transform:scaleX(-1); border-radius:10px; border:1px solid rgba(255,255,255,0.1); box-shadow:0 12px 30px rgba(0,0,0,0.35); }
+    #previewNote { font-size:11px; opacity:0.75; background:rgba(0,0,0,0.35); padding:4px 8px; border:1px solid rgba(255,255,255,0.12); border-radius:999px; }
+    .hidden { display:none !important; }
+    .bubble { position:absolute; bottom:-40px; width:12px; height:12px; border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 25%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%), rgba(255,255,255,0.12); filter:blur(0.2px); animation:rise 9s linear infinite; pointer-events:none; }
+    @keyframes rise { 0% { transform:translateY(0) translateX(0) scale(0.9); opacity:0; } 10% { opacity:0.55; } 100% { transform:translateY(-120vh) translateX(-20px) scale(1.15); opacity:0; } }
+    @media (max-width:680px) { #preview { width:180px; height:132px; } #startTitle { font-size:22px; } #startSubtitle { font-size:14px; } }
   </style>
 </head>
 <body>
@@ -86,7 +41,7 @@
     <button class="pill btn" id="previewBtn">📷 Show Camera</button>
   </div>
 
-  <div id="statusPill">Tip: Show any fingertip to steer your fish. Make sure you’re on HTTPS or localhost and allow camera access.</div>
+  <div id="statusPill">Tip: Use HTTPS and allow the camera. Show any fingertip to steer your fish.</div>
 
   <div id="previewWrap">
     <video id="preview" autoplay muted playsinline></video>
@@ -95,25 +50,18 @@
 
   <div id="startOverlay">
     <div id="startCard">
-      <div id="startTitle">Big Fish Eats Little Fish 🐟</div>
-      <div id="startSubtitle">
-        Use any fingertip to steer your fish. Eat smaller fish to grow. Avoid bigger fish or you’ll shrink.
-        Background music and bubbles for a cozy underwater vibe.
-      </div>
+      <div id="startTitle">Big Fish Eats Little Fish</div>
+      <div id="startSubtitle">Show any fingertip to steer. Eat smaller fish to grow. Avoid bigger fish.</div>
       <button id="playBtn">Play • Allow Camera</button>
       <div id="help">
-        - Use HTTPS or localhost; browsers block the camera on file:// or plain HTTP<br/>
-        - Good lighting helps; hold up one clear fingertip<br/>
-        - Toggle music and camera preview from the top toolbar<br/>
-        - Press M to enable quick mouse control anytime (fallback)
+        - HTTPS (or localhost) is required for camera<br>
+        - If camera fails, press M to use mouse control
       </div>
     </div>
   </div>
 
   <script type="module">
-    import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/vision_bundle.mjs";
-
-    // --- DOM refs ---
+    // Basic DOM refs
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d', { alpha: true });
     const scorePill = document.getElementById('scorePill');
@@ -128,7 +76,7 @@
     const previewWrap = document.getElementById('previewWrap');
     const videoEl = document.getElementById('preview');
 
-    // --- Canvas sizing ---
+    // Canvas sizing
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(window.innerWidth * dpr);
@@ -140,617 +88,230 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // --- Game State ---
-    let playing = false;
-    let paused = false;
-    let score = 0;
-    let level = 1;
-    let nextLevelScore = 40;
-    const fishList = [];
-    const bubbles = [];
+    // Game state
+    let playing = false, paused = false;
+    let score = 0, level = 1, nextLevelScore = 40;
+    const fishList = [], bubbles = [];
     let lastTime = 0;
 
+    const rand = (a,b)=>Math.random()*(b-a)+a;
+    const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+    const palette=['#ff9aa2','#ffb7b2','#ffdac1','#e2f0cb','#b5ead7','#c7ceea','#8ecae6','#ffb703','#fb8500','#90be6d','#f94144','#577590'];
+
     // Player
-    const player = {
-      x: Math.random() * (canvas.width / (window.devicePixelRatio || 1)),
-      y: Math.random() * (canvas.height / (window.devicePixelRatio || 1)),
-      r: 16,
-      targetX: null, targetY: null,
-      vx: 0, vy: 0,
-      color: '#6fe0ff',
-      eyeColor: '#052033',
-      alive: true
-    };
+    const player = { x: Math.random()*(canvas.width/(window.devicePixelRatio||1)), y: Math.random()*(canvas.height/(window.devicePixelRatio||1)), r:16, targetX:null, targetY:null, vx:0, vy:0, color:'#6fe0ff', eyeColor:'#052033' };
 
-    // Finger tracking state
-    let finger = {
-      xNorm: 0.5, yNorm: 0.5,        // normalized 0..1 (mirrored)
-      x: player.x, y: player.y,      // mapped to canvas
-      visible: false,
-      lastSeen: 0
-    };
+    // Finger state
+    const finger = { xNorm:0.5, yNorm:0.5, x:player.x, y:player.y, visible:false, lastSeen:0 };
 
-    // Spawn config
-    let spawnTimer = 0;
-    let spawnInterval = 800; // ms
-    const palette = [
-      '#ff9aa2', '#ffb7b2', '#ffdac1',
-      '#e2f0cb', '#b5ead7', '#c7ceea',
-      '#8ecae6', '#ffb703', '#fb8500',
-      '#90be6d', '#f94144', '#577590'
+    // Audio (simple, safe)
+    let audioCtx=null, masterGain=null, musicOn=true;
+    function initAudio(){
+      if(audioCtx) return;
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      masterGain=audioCtx.createGain(); masterGain.gain.value=0.18; masterGain.connect(audioCtx.destination);
+    }
+    function toggleMusic(){ musicOn=!musicOn; musicBtn.textContent = musicOn?'🔊 Music On':'🔇 Music Off'; if(!audioCtx) return; if(musicOn) audioCtx.resume(); else audioCtx.suspend(); }
+    function pop(p=800){ if(!audioCtx||!musicOn) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=p; g.gain.setValueAtTime(0,audioCtx.currentTime); g.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.18); o.connect(g).connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.2); }
+
+    // Multi-CDN loader for MediaPipe Tasks
+    const CDN_BASES = [
+      'https://fastly.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9',
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9',
+      'https://unpkg.com/@mediapipe/tasks-vision@0.10.9',
+      'https://gcore.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9'
     ];
+    let HandLandmarker=null, FilesetResolver=null, TASKS_BASE=null, handLandmarker=null;
 
-    // Utils
-    const rand = (a, b) => Math.random() * (b - a) + a;
-    const randInt = (a, b) => Math.floor(rand(a, b));
-    const choose = (arr) => arr[randInt(0, arr.length)];
-    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
-    // --- Background Music (WebAudio) ---
-    let audioCtx = null;
-    let musicOn = true;
-    let masterGain, padGain, delay, delayGain, pluckGain, lfo, padOscs = [];
-    const bpm = 72;
-    const barMs = (60_000 / bpm) * 4;
-    let nextBarTime = 0;
-
-    function initAudio() {
-      if (audioCtx) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      masterGain = audioCtx.createGain();
-      masterGain.gain.value = 0.18;
-      masterGain.connect(audioCtx.destination);
-
-      delay = audioCtx.createDelay(1.2);
-      delay.delayTime.value = 0.32;
-      delayGain = audioCtx.createGain();
-      delayGain.gain.value = 0.28;
-
-      padGain = audioCtx.createGain(); padGain.gain.value = 0.18;
-      pluckGain = audioCtx.createGain(); pluckGain.gain.value = 0.22;
-
-      lfo = audioCtx.createOscillator();
-      const lfoGain = audioCtx.createGain();
-      lfo.frequency.value = 0.12;
-      lfoGain.gain.value = 6;
-      lfo.connect(lfoGain);
-
-      const freqsA = [196.00, 246.94, 293.66];
-      const freqsB = [174.61, 220.00, 261.63];
-      const padChord = (freqs) => {
-        padOscs.forEach(o => { try { o.stop(); } catch {} });
-        padOscs = [];
-        freqs.forEach(f => {
-          const osc = audioCtx.createOscillator();
-          osc.type = 'sine';
-          const gain = audioCtx.createGain();
-          gain.gain.value = 0.33 / freqs.length;
-          lfoGain.connect(osc.detune);
-          osc.frequency.value = f;
-          osc.connect(gain).connect(padGain);
-          osc.start();
-          padOscs.push(osc);
-        });
-      };
-
-      padGain.connect(delay); padGain.connect(masterGain);
-      delay.connect(delayGain).connect(masterGain);
-      pluckGain.connect(delay); pluckGain.connect(masterGain);
-      lfo.start();
-
-      let chordIndex = 0;
-      function scheduleMusic() {
-        if (!musicOn) return;
-        const now = audioCtx.currentTime;
-        if (nextBarTime < now) nextBarTime = now;
-        const freqs = (chordIndex % 2 === 0) ? freqsA : freqsB; chordIndex++;
-
-        if (padOscs.length === 0) padChord(freqs);
-        else for (let i = 0; i < padOscs.length; i++) {
-          padOscs[i].frequency.exponentialRampToValueAtTime(freqs[i], nextBarTime + 0.05);
-        }
-
-        const arp = freqs.concat([freqs[0] / 2]);
-        for (let i = 0; i < 6; i++) {
-          const t = nextBarTime + i * (barMs / 1000) / 6;
-          const freq = arp[i % arp.length];
-          const o = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          o.type = 'triangle';
-          o.frequency.value = freq * (Math.random() < 0.5 ? 1 : 2);
-          g.gain.setValueAtTime(0.0, t);
-          g.gain.linearRampToValueAtTime(0.15, t + 0.02);
-          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4 + Math.random() * 0.1);
-          o.connect(g).connect(pluckGain);
-          o.start(t); o.stop(t + 0.6);
-        }
-
-        nextBarTime += barMs / 1000;
-        setTimeout(scheduleMusic, barMs * 0.9);
+    async function loadTasksVision(){
+      let lastErr=null;
+      for(const base of CDN_BASES){
+        try{
+          const mod = await import(`${base}/vision_bundle.mjs`);
+          HandLandmarker = mod.HandLandmarker;
+          FilesetResolver = mod.FilesetResolver;
+          TASKS_BASE = `${base}/wasm`;
+          console.log('Loaded Tasks from', base);
+          return;
+        }catch(e){ console.warn('CDN failed:', base, e); lastErr=e; }
       }
-      scheduleMusic();
+      throw lastErr || new Error('All CDN sources failed');
     }
 
-    function toggleMusic() {
-      musicOn = !musicOn;
-      musicBtn.textContent = musicOn ? '🔊 Music On' : '🔇 Music Off';
-      if (!audioCtx) return;
-      if (musicOn) audioCtx.resume(); else audioCtx.suspend();
-    }
-
-    function playPopSound(pitch = 800) {
-      if (!audioCtx || !musicOn) return;
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      o.type = 'sine'; o.frequency.value = pitch;
-      g.gain.setValueAtTime(0, audioCtx.currentTime);
-      g.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.18);
-      o.connect(g).connect(masterGain);
-      o.start(); o.stop(audioCtx.currentTime + 0.2);
-    }
-
-    // --- MediaPipe Tasks HandLandmarker ---
-    let handLandmarker = null;
-    let videoStream = null;
-    let lastVideoTime = -1;
-    let detectionLoopRunning = false;
-
-    const SECURE = window.isSecureContext || ['localhost','127.0.0.1'].includes(location.hostname);
-
-    async function loadHandLandmarker() {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
-      );
-      try {
+    async function loadHandModel(){
+      const vision = await FilesetResolver.forVisionTasks(TASKS_BASE);
+      try{
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: {
-            modelAssetPath: "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm/hand_landmarker.task",
-            delegate: "GPU"
-          },
-          runningMode: "VIDEO",
-          numHands: 2
+          baseOptions: { modelAssetPath: `${TASKS_BASE}/hand_landmarker.task`, delegate: 'GPU' },
+          runningMode: 'VIDEO', numHands: 2, minHandDetectionConfidence:0.5, minHandPresenceConfidence:0.5, minTrackingConfidence:0.5
         });
-      } catch (e) {
-        console.warn("GPU delegate failed, falling back to CPU:", e);
+      }catch(e){
+        console.warn('GPU delegate failed, switching to CPU', e);
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: {
-            modelAssetPath: "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm/hand_landmarker.task",
-            delegate: "CPU"
-          },
-          runningMode: "VIDEO",
-          numHands: 2
+          baseOptions: { modelAssetPath: `${TASKS_BASE}/hand_landmarker.task`, delegate: 'CPU' },
+          runningMode: 'VIDEO', numHands: 2, minHandDetectionConfidence:0.5, minHandPresenceConfidence:0.5, minTrackingConfidence:0.5
         });
       }
     }
 
-    async function startCamera() {
-      if (!SECURE) {
-        statusPill.textContent = "Camera needs HTTPS or localhost. Start a local server or deploy with HTTPS. Press M for mouse control.";
-        throw new Error("Insecure context; camera blocked by browser.");
-      }
-      const constraints = {
-        audio: false,
-        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }
-      };
-      videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-      videoEl.srcObject = videoStream;
+    async function startCamera(){
+      const stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} }, audio:false });
+      videoEl.srcObject = stream;
       await videoEl.play();
-      // Show preview by default so it’s obvious camera works
-      previewWrap.style.display = 'flex';
-      previewBtn.textContent = '📷 Hide Camera';
+      previewWrap.style.display='flex';
+      previewBtn.textContent='📷 Hide Camera';
     }
 
-    function pickDominantFingertip(allHands) {
-      // 0 wrist; 4 thumb, 8 index, 12 middle, 16 ring, 20 pinky
-      const tipIdxs = [4, 8, 12, 16, 20];
-      let best = null, bestScore = -Infinity;
-      for (const lm of allHands) {
-        const wrist = lm[0];
-        for (const ti of tipIdxs) {
-          const tip = lm[ti];
-          // MCP and PIP indices per finger
-          let mcpIndex, pipIndex;
-          if (ti === 4) { mcpIndex = 2; pipIndex = 3; }      // thumb
-          else if (ti === 8) { mcpIndex = 5; pipIndex = 6; } // index
-          else if (ti === 12) { mcpIndex = 9; pipIndex = 10; } // middle
-          else if (ti === 16) { mcpIndex = 13; pipIndex = 14; } // ring
-          else { mcpIndex = 17; pipIndex = 18; } // pinky
-          const mcp = lm[mcpIndex], pip = lm[pipIndex];
-
-          const distWR = Math.hypot(tip.x - wrist.x, tip.y - wrist.y);
-          const distMcpTip = Math.hypot(tip.x - mcp.x, tip.y - mcp.y);
-          const distMcpPip = Math.hypot(pip.x - mcp.x, pip.y - mcp.y) + 1e-6;
-          const extRatio = distMcpTip / distMcpPip; // >1 when extended
-          const zScore = -(tip.z ?? 0); // z is negative when closer
-
-          const score = 1.2 * distWR + 0.35 * (extRatio - 1) + 0.10 * zScore;
-          if (score > bestScore) { bestScore = score; best = tip; }
+    // Pick dominant fingertip
+    function pickTip(hands){
+      const tipIdx=[4,8,12,16,20];
+      let best=null,score=-1;
+      for(const lm of hands){
+        const wrist=lm[0];
+        for(const i of tipIdx){
+          const tip=lm[i];
+          const distWR = Math.hypot(tip.x-wrist.x, tip.y-wrist.y);
+          let mcp,pip; if(i===4){mcp=lm[2];pip=lm[3];} else if(i===8){mcp=lm[5];pip=lm[6];}
+          else if(i===12){mcp=lm[9];pip=lm[10];} else if(i===16){mcp=lm[13];pip=lm[14];} else {mcp=lm[17];pip=lm[18];}
+          const ext = Math.hypot(tip.x-mcp.x, tip.y-mcp.y) / (Math.hypot(pip.x-mcp.x, pip.y-mcp.y)+1e-6);
+          const zScore = -(tip.z||0);
+          const s = 1.2*distWR + 0.35*(ext-1) + 0.1*zScore;
+          if(s>score){score=s;best=tip;}
         }
       }
       return best;
     }
 
-    function onHandResults(results) {
-      if (results && results.landmarks && results.landmarks.length > 0) {
-        const bestTip = pickDominantFingertip(results.landmarks);
-        if (bestTip) {
-          // Mirror X so motion matches the mirrored preview
-          finger.xNorm = 1 - bestTip.x;
-          finger.yNorm = bestTip.y;
-          finger.lastSeen = performance.now();
-          finger.visible = true;
-          statusPill.textContent = 'Tracking your fingertip — steer your fish!';
-          return;
-        }
-      }
-      if (performance.now() - finger.lastSeen > 400) {
-        finger.visible = false;
-        statusPill.textContent = 'Show any fingertip to steer your fish.';
-      }
-    }
-
-    function startDetectionLoop() {
-      if (detectionLoopRunning) return;
-      detectionLoopRunning = true;
-      const loop = () => {
-        if (!handLandmarker || !videoEl.videoWidth) {
-          requestAnimationFrame(loop);
-          return;
-        }
-        const nowMs = performance.now();
-        if (videoEl.currentTime !== lastVideoTime) {
-          lastVideoTime = videoEl.currentTime;
-          const results = handLandmarker.detectForVideo(videoEl, nowMs);
-          onHandResults(results);
-        }
-        requestAnimationFrame(loop);
-      };
-      requestAnimationFrame(loop);
-    }
-
-    // --- Fish Factory ---
-    function createFish() {
-      const sizeTypeRoll = Math.random();
-      let r, speed, kind;
-      if (sizeTypeRoll < 0.58) { r = rand(8, 16); speed = rand(1.6, 2.6); kind = 'small'; }
-      else if (sizeTypeRoll < 0.9) { r = rand(16, 26); speed = rand(1.1, 1.9); kind = 'medium'; }
-      else { r = rand(26, 42); speed = rand(0.7, 1.3); kind = 'large'; }
-
-      r *= (1 + (level - 1) * 0.08);
-      speed *= (1 + (level - 1) * 0.05);
-
-      return {
-        x: canvas.width / (window.devicePixelRatio || 1) + rand(20, 180),
-        y: rand(40, canvas.height / (window.devicePixelRatio || 1) - 40),
-        r, speed, baseSpeed: speed,
-        bobA: rand(8, 26), bobT: rand(0, Math.PI * 2),
-        color: choose(palette),
-        eyeColor: '#001c2e',
-        stripe: Math.random() < 0.4,
-        dir: -1, eaten: false, kind
-      };
-    }
-
-    // --- Drawing helpers ---
-    function drawFishShape(x, y, r, color, eye = '#052033', facing = 1, stripe = false) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.scale(facing, 1);
-
-      const bodyL = r * 2.2;
-      const tailW = r * 0.9;
-      ctx.beginPath();
-      ctx.moveTo(-bodyL * 0.95, 0);
-      ctx.lineTo(-bodyL * 0.95 - tailW, -tailW * 0.6);
-      ctx.lineTo(-bodyL * 0.95 - tailW, tailW * 0.6);
-      ctx.closePath();
-      ctx.fillStyle = color;
-      ctx.globalAlpha = 0.95;
-      ctx.fill();
-
-      const grad = ctx.createLinearGradient(-bodyL, -r, bodyL, r);
-      grad.addColorStop(0, color + 'cc'); grad.addColorStop(0.5, color); grad.addColorStop(1, color + 'cc');
-      ctx.beginPath();
-      ctx.ellipse(0, 0, bodyL, r * 1.05, 0, 0, Math.PI * 2);
-      ctx.fillStyle = grad; ctx.globalAlpha = 1; ctx.fill();
-
-      if (stripe) {
-        ctx.save(); ctx.globalAlpha = 0.22; ctx.fillStyle = '#ffffff';
-        for (let i = -2; i <= 2; i++) {
-          ctx.beginPath(); ctx.ellipse(i * r * 0.65, 0, r * 0.22, r * 0.7, 0, 0, Math.PI * 2); ctx.fill();
-        }
-        ctx.restore();
-      }
-
-      ctx.beginPath(); ctx.arc(bodyL * 0.7, -r * 0.18, r * 0.16, 0, Math.PI * 2); ctx.fillStyle = 'white'; ctx.fill();
-      ctx.beginPath(); ctx.arc(bodyL * 0.73, -r * 0.18, r * 0.08, 0, Math.PI * 2); ctx.fillStyle = eye; ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(bodyL * 1.05, 0);
-      ctx.quadraticCurveTo(bodyL * 1.08, r * 0.1, bodyL * 1.02, r * 0.12);
-      ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-      ctx.lineWidth = Math.max(1, r * 0.05);
-      ctx.stroke();
-
-      ctx.restore();
-    }
-
-    function drawWaterBackdrop(t) {
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      for (let i = 0; i < 3; i++) {
-        const x = (Math.sin(t * 0.00015 + i) * 0.5 + 0.5) * w;
-        const grad = ctx.createRadialGradient(x, 0, 20, x, 0, h * 0.9);
-        grad.addColorStop(0, 'rgba(255,255,255,0.03)');
-        grad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, w, h);
-      }
-      ctx.save();
-      ctx.globalAlpha = 0.35;
-      ctx.fillStyle = 'rgba(255,255,255,0.08)';
-      for (let i = 0; i < 60; i++) {
-        const px = ((i * 1313.13) % w + (t * 0.01 + i * 10) % w) % w;
-        const py = ((i * 733.3) % h + Math.sin(t * 0.0003 + i) * 20 + h) % h;
-        ctx.beginPath(); ctx.arc(px, py, 1.3, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    // --- Gameplay logic ---
-    function spawnFishIfNeeded(dt) {
-      spawnTimer += dt;
-      const currentInterval = Math.max(300, spawnInterval - (level - 1) * 30);
-      if (spawnTimer >= currentInterval) {
-        spawnTimer = 0;
-        fishList.push(createFish());
-      }
-    }
-
-    function updateFish(dt) {
-      for (let i = fishList.length - 1; i >= 0; i--) {
-        const f = fishList[i];
-        f.bobT += dt * 0.0025;
-        f.y += Math.sin(f.bobT * 2 + f.x * 0.01) * 0.4;
-        f.x += f.dir * f.speed;
-
-        if (f.x < -200) { fishList.splice(i, 1); continue; }
-
-        const dx = f.x - player.x, dy = f.y - player.y;
-        const dist2 = dx*dx + dy*dy;
-        const rSum = f.r + player.r * 0.9;
-        if (dist2 < rSum * rSum) {
-          if (f.r < player.r * 0.9) {
-            fishList.splice(i, 1);
-            addScore(Math.ceil(4 + f.r * 0.6));
-            growPlayer(f.r);
-            emitBubble(player.x, player.y, 6, '#b9fff1');
-            playPopSound(750 + Math.random() * 200);
-          } else if (f.r > player.r * 1.15) {
-            shrinkPlayer(f.r);
-            emitBubble(player.x, player.y, 6, '#ffc6c6');
-            playPopSound(420 + Math.random() * 60);
-            player.x -= Math.sign(dx) * 8;
-            player.y -= Math.sign(dy) * 8;
-          } else {
-            player.x -= Math.sign(dx) * 2;
-            player.y -= Math.sign(dy) * 2;
+    // Hand detection loop
+    let lastVideoTime=-1;
+    function detectLoop(){
+      if(handLandmarker && videoEl.videoWidth){
+        const now=performance.now();
+        if(videoEl.currentTime!==lastVideoTime){
+          lastVideoTime=videoEl.currentTime;
+          const results = handLandmarker.detectForVideo(videoEl, now);
+          if(results && results.landmarks && results.landmarks.length>0){
+            const tip=pickTip(results.landmarks);
+            if(tip){
+              finger.xNorm = 1 - tip.x; finger.yNorm = tip.y;
+              finger.lastSeen = performance.now(); finger.visible = true;
+              statusPill.textContent = 'Tracking fingertip. Move your finger to steer.';
+            }
+          }else if(performance.now()-finger.lastSeen>400){
+            finger.visible=false; statusPill.textContent='Show any fingertip to steer.';
           }
         }
       }
+      requestAnimationFrame(detectLoop);
     }
 
-    function addScore(s) {
-      score += s;
-      scorePill.textContent = `Score: ${score}`;
-      if (score >= nextLevelScore) {
-        level++;
-        nextLevelScore += Math.floor(40 + level * 30);
-        levelPill.textContent = `Level: ${level}`;
-        for (let i = 0; i < 10; i++) emitBubble(rand(40, canvas.width), canvas.height - rand(0, 60), rand(6, 10), '#d5f7ff');
-      }
+    // Fish, gameplay, drawing
+    function createFish(){
+      const rType=Math.random(); let r,speed;
+      if(rType<0.58){ r=rand(8,16); speed=rand(1.6,2.6); }
+      else if(rType<0.9){ r=rand(16,26); speed=rand(1.1,1.9); }
+      else { r=rand(26,42); speed=rand(0.7,1.3); }
+      r*= (1+(level-1)*0.08); speed*= (1+(level-1)*0.05);
+      return { x: canvas.width/(window.devicePixelRatio||1)+rand(20,180), y: rand(40, canvas.height/(window.devicePixelRatio||1)-40), r, speed, bobT: rand(0,Math.PI*2), color: palette[Math.floor(Math.random()*palette.length)] };
     }
-
-    function growPlayer(eatenR) {
-      const areaSelf = Math.PI * player.r * player.r;
-      const areaEaten = Math.PI * eatenR * eatenR;
-      const newArea = areaSelf + areaEaten * 0.55;
-      player.r = Math.sqrt(newArea / Math.PI);
-      sizePill.textContent = `Size: ${Math.round(player.r)}`;
-    }
-
-    function shrinkPlayer(enemyR) {
-      const areaSelf = Math.PI * player.r * player.r;
-      const areaEnemy = Math.PI * enemyR * enemyR;
-      const newArea = Math.max(90, areaSelf - areaEnemy * 0.35);
-      player.r = Math.sqrt(newArea / Math.PI);
-      sizePill.textContent = `Size: ${Math.round(player.r)}`;
-      statusPill.textContent = 'Ouch! Bigger fish will shrink you — eat smaller ones to grow.';
-    }
-
-    function emitBubble(x, y, count = 6, color = '#e7fbff') {
-      for (let i = 0; i < count; i++) {
-        bubbles.push({
-          x, y,
-          vx: rand(-0.6, 0.6),
-          vy: rand(-2.2, -1.1),
-          r: rand(2.5, 5.5),
-          life: rand(400, 950),
-          t: 0,
-          color
-        });
-      }
-    }
-
-    function updateBubbles(dt) {
-      for (let i = bubbles.length - 1; i >= 0; i--) {
-        const b = bubbles[i];
-        b.t += dt; b.x += b.vx; b.y += b.vy;
-        if (b.t > b.life) bubbles.splice(i, 1);
-      }
-    }
-
-    // --- Finger mapping and player control ---
-    function updatePlayer(dt) {
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      if (finger.visible) {
-        finger.x = clamp(finger.xNorm * w, 0, w);
-        finger.y = clamp(finger.yNorm * h, 0, h);
-        player.targetX = finger.x;
-        player.targetY = finger.y;
-      }
-
-      if (player.targetX !== null && player.targetY !== null) {
-        const dx = player.targetX - player.x;
-        const dy = player.targetY - player.y;
-        const smoothing = 0.25;
-        player.vx = player.vx * (1 - smoothing) + dx * smoothing;
-        player.vy = player.vy * (1 - smoothing) + dy * smoothing;
-      } else {
-        player.vx *= 0.9; player.vy *= 0.9;
-      }
-
-      const maxStep = 18;
-      const stepX = clamp(player.vx, -maxStep, maxStep);
-      const stepY = clamp(player.vy, -maxStep, maxStep);
-      player.x = clamp(player.x + stepX, 0, w);
-      player.y = clamp(player.y + stepY, 0, h);
-    }
-
-    function drawBubbles() {
-      ctx.save();
-      for (const b of bubbles) {
-        const alpha = 1 - b.t / b.life;
-        ctx.globalAlpha = Math.max(0, alpha) * 0.8; ctx.fillStyle = b.color;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
-      }
+    function emitBubble(x,y,n=6,color='#e7fbff'){ for(let i=0;i<n;i++){ bubbles.push({x,y,vx:rand(-0.6,0.6),vy:rand(-2.2,-1.1),r:rand(2.5,5.5),life:rand(400,950),t:0,color}); } }
+    function updateBubbles(dt){ for(let i=bubbles.length-1;i>=0;i--){ const b=bubbles[i]; b.t+=dt; b.x+=b.vx; b.y+=b.vy; if(b.t>b.life) bubbles.splice(i,1); } }
+    function drawBubbles(){ ctx.save(); for(const b of bubbles){ const a=Math.max(0,1-b.t/b.life)*0.8; ctx.globalAlpha=a; ctx.fillStyle=b.color; ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill(); } ctx.restore(); }
+    function drawFishShape(x,y,r,color,eye='#052033',face=1,stripe=false){
+      ctx.save(); ctx.translate(x,y); ctx.scale(face,1);
+      const L=r*2.2, T=r*0.9;
+      ctx.beginPath(); ctx.moveTo(-L*0.95,0); ctx.lineTo(-L*0.95-T,-T*0.6); ctx.lineTo(-L*0.95-T,T*0.6); ctx.closePath(); ctx.fillStyle=color; ctx.globalAlpha=0.95; ctx.fill();
+      const grad=ctx.createLinearGradient(-L,-r,L,r); grad.addColorStop(0,color+'cc'); grad.addColorStop(0.5,color); grad.addColorStop(1,color+'cc');
+      ctx.beginPath(); ctx.ellipse(0,0,L,r*1.05,0,0,Math.PI*2); ctx.fillStyle=grad; ctx.globalAlpha=1; ctx.fill();
+      if(stripe){ ctx.save(); ctx.globalAlpha=0.22; ctx.fillStyle='#fff'; for(let i=-2;i<=2;i++){ ctx.beginPath(); ctx.ellipse(i*r*0.65,0,r*0.22,r*0.7,0,0,Math.PI*2); ctx.fill(); } ctx.restore(); }
+      ctx.beginPath(); ctx.arc(L*0.7,-r*0.18,r*0.16,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(L*0.73,-r*0.18,r*0.08,0,Math.PI*2); ctx.fillStyle=eye; ctx.fill();
       ctx.restore();
     }
+    function drawWater(t){
+      const w=canvas.width/(window.devicePixelRatio||1), h=canvas.height/(window.devicePixelRatio||1);
+      for(let i=0;i<3;i++){ const x=(Math.sin(t*0.00015+i)*0.5+0.5)*w; const g=ctx.createRadialGradient(x,0,20,x,0,h*0.9); g.addColorStop(0,'rgba(255,255,255,0.03)'); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+      ctx.save(); ctx.globalAlpha=0.35; ctx.fillStyle='rgba(255,255,255,0.08)'; for(let i=0;i<60;i++){ const px=((i*1313.13)%w+(t*0.01+i*10)%w)%w; const py=((i*733.3)%h+Math.sin(t*0.0003+i)*20+h)%h; ctx.beginPath(); ctx.arc(px,py,1.3,0,Math.PI*2); ctx.fill(); } ctx.restore();
+    }
+    function spawnFishIfNeeded(dt){ spawnTimer+=dt; const interval=Math.max(300,800-(level-1)*30); if(spawnTimer>=interval){ spawnTimer=0; fishList.push(createFish()); } }
+    let spawnTimer=0;
+    function updateFish(dt){
+      for(let i=fishList.length-1;i>=0;i--){
+        const f=fishList[i];
+        f.bobT+=dt*0.0025;
+        f.y+=Math.sin(f.bobT*2+f.x*0.01)*0.4;
+        f.x+=-f.speed;
+        if(f.x<-200){ fishList.splice(i,1); continue; }
+        const dx=f.x-player.x, dy=f.y-player.y; const d2=dx*dx+dy*dy; const rs=f.r+player.r*0.9;
+        if(d2<rs*rs){
+          if(f.r<player.r*0.9){ fishList.splice(i,1); score+=Math.ceil(4+f.r*0.6); scorePill.textContent='Score: '+score; grow(f.r); emitBubble(player.x,player.y,6,'#b9fff1'); pop(800); }
+          else if(f.r>player.r*1.15){ shrink(f.r); emitBubble(player.x,player.y,6,'#ffc6c6'); pop(440); player.x-=Math.sign(dx)*8; player.y-=Math.sign(dy)*8; }
+          else { player.x-=Math.sign(dx)*2; player.y-=Math.sign(dy)*2; }
+        }
+      }
+    }
+    function grow(eR){ const aSelf=Math.PI*player.r*player.r, aEat=Math.PI*eR*eR; player.r=Math.sqrt((aSelf+aEat*0.55)/Math.PI); sizePill.textContent='Size: '+Math.round(player.r); if(score>=nextLevelScore){ level++; nextLevelScore+=Math.floor(40+level*30); levelPill.textContent='Level: '+level; } }
+    function shrink(eR){ const aSelf=Math.PI*player.r*player.r, aEnemy=Math.PI*eR*eR; player.r=Math.sqrt(Math.max(90,aSelf-aEnemy*0.35)/Math.PI); sizePill.textContent='Size: '+Math.round(player.r); statusPill.textContent='Ouch! Avoid bigger fish.'; }
 
-    function drawAll() {
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      ctx.clearRect(0, 0, w, h);
-      drawWaterBackdrop(performance.now());
-      for (const f of fishList) drawFishShape(f.x, f.y, f.r, f.color, f.eyeColor, -1, f.stripe);
-      const facing = (player.vx >= -0.5) ? 1 : -1;
-      drawFishShape(player.x, player.y, player.r, player.color, player.eyeColor, facing, true);
+    function updatePlayer(dt){
+      const w=canvas.width/(window.devicePixelRatio||1), h=canvas.height/(window.devicePixelRatio||1);
+      if(finger.visible){ finger.x=clamp(finger.xNorm*w,0,w); finger.y=clamp(finger.yNorm*h,0,h); player.targetX=finger.x; player.targetY=finger.y; }
+      if(player.targetX!=null&&player.targetY!=null){ const dx=player.targetX-player.x, dy=player.targetY-player.y; const s=0.25; player.vx=player.vx*(1-s)+dx*s; player.vy=player.vy*(1-s)+dy*s; } else { player.vx*=0.9; player.vy*=0.9; }
+      const maxStep=18; player.x=clamp(player.x+clamp(player.vx,-maxStep,maxStep),0,w); player.y=clamp(player.y+clamp(player.vy,-maxStep,maxStep),0,h);
+    }
+
+    function drawAll(){
+      const w=canvas.width/(window.devicePixelRatio||1), h=canvas.height/(window.devicePixelRatio||1);
+      ctx.clearRect(0,0,w,h); drawWater(performance.now());
+      for(const f of fishList) drawFishShape(f.x,f.y,f.r,f.color,'#001c2e',-1,Math.random()<0.4);
+      const facing=(player.vx>=-0.5)?1:-1; drawFishShape(player.x,player.y,player.r,player.color,player.eyeColor,facing,true);
       drawBubbles();
-      if (finger.visible) {
-        ctx.save(); ctx.globalAlpha = 0.6;
-        ctx.beginPath(); ctx.arc(finger.x, finger.y, 6, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.fill();
-        ctx.beginPath(); ctx.arc(finger.x, finger.y, 12, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 2; ctx.stroke();
-        ctx.restore();
-      }
+      if(finger.visible){ ctx.save(); ctx.globalAlpha=0.6; ctx.beginPath(); ctx.arc(finger.x,finger.y,6,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.fill(); ctx.beginPath(); ctx.arc(finger.x,finger.y,12,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.22)'; ctx.lineWidth=2; ctx.stroke(); ctx.restore(); }
     }
 
-    // --- Game loop ---
-    function loop(ts) {
-      if (!playing) return;
-      if (paused) { requestAnimationFrame(loop); return; }
-      if (!lastTime) lastTime = ts;
-      const dt = ts - lastTime; lastTime = ts;
-
-      spawnFishIfNeeded(dt);
-      updateFish(dt);
-      updatePlayer(dt);
-      updateBubbles(dt);
-      drawAll();
-
-      requestAnimationFrame(loop);
-    }
-
-    // --- UI handlers ---
+    // UI
     musicBtn.addEventListener('click', toggleMusic);
+    let previewVisible=false;
+    previewBtn.addEventListener('click',()=>{ previewVisible=!previewVisible; previewWrap.style.display=previewVisible?'flex':'none'; previewBtn.textContent=previewVisible?'📷 Hide Camera':'📷 Show Camera'; });
+    pauseBtn.addEventListener('click',()=>{ paused=!paused; pauseBtn.textContent=paused?'▶️ Resume':'⏸ Pause'; if(!paused) lastTime=0; });
+    window.addEventListener('blur',()=>{ if(playing){ paused=true; pauseBtn.textContent='▶️ Resume'; } });
 
-    let previewVisible = true; // default shown after camera starts
-    previewBtn.addEventListener('click', () => {
-      previewVisible = !previewVisible;
-      previewWrap.style.display = previewVisible ? 'flex' : 'none';
-      previewBtn.textContent = previewVisible ? '📷 Hide Camera' : '📷 Show Camera';
-    });
+    // Mouse fallback (press M)
+    function enableMouse(){ canvas.addEventListener('mousemove',ev=>{ const rect=canvas.getBoundingClientRect(); finger.x=ev.clientX-rect.left; finger.y=ev.clientY-rect.top; finger.visible=true; player.targetX=finger.x; player.targetY=finger.y; },{passive:true}); statusPill.textContent='Mouse control enabled. Move mouse to steer.'; }
+    window.addEventListener('keydown',e=>{ if(e.key.toLowerCase()==='m') enableMouse(); });
 
-    pauseBtn.addEventListener('click', () => {
-      paused = !paused;
-      pauseBtn.textContent = paused ? ▶️ Resume' : '⏸ Pause';
-      if (!paused) lastTime = 0;
-    });
-
-    window.addEventListener('blur', () => {
-      if (playing) { paused = true; pauseBtn.textContent = '▶️ Resume'; }
-    });
-
-    // Mouse fallback (press M to force)
-    function enableMouseControl() {
-      canvas.addEventListener('mousemove', (ev) => {
-        const rect = canvas.getBoundingClientRect();
-        finger.x = ev.clientX - rect.left;
-        finger.y = ev.clientY - rect.top;
-        finger.visible = true;
-        player.targetX = finger.x;
-        player.targetY = finger.y;
-      }, { passive: true });
-      statusPill.textContent = 'Mouse control enabled (fallback). Move your mouse to steer the fish.';
-    }
-    window.addEventListener('keydown', (e) => { if (e.key.toLowerCase() === 'm') enableMouseControl(); });
-
-    // Decorative ambient DOM bubbles
-    (function spawnDomBubbles() {
-      for (let i = 0; i < 8; i++) {
-        const b = document.createElement('div');
-        b.className = 'bubble';
-        b.style.left = rand(0, 100) + 'vw';
-        b.style.animationDelay = rand(0, 9) + 's';
-        b.style.opacity = rand(0.35, 0.8);
-        b.style.transform = `translateY(0) scale(${rand(0.7,1.3)})`;
-        document.body.appendChild(b);
-      }
-    })();
-
-    // --- Start flow ---
-    playBtn.addEventListener('click', async () => {
-      playBtn.disabled = true;
-      playBtn.textContent = 'Starting...';
-      try { initAudio(); } catch {}
-
-      try {
-        statusPill.textContent = 'Loading hand model...';
-        await loadHandLandmarker();
-        statusPill.textContent = 'Starting camera...';
+    // Start flow
+    playBtn.addEventListener('click', async ()=>{
+      playBtn.disabled=true; playBtn.textContent='Starting...';
+      try{ initAudio(); }catch(e){}
+      try{
+        statusPill.textContent='Loading hand model...';
+        await loadTasksVision();
+        await loadHandModel();
+        statusPill.textContent='Starting camera...';
         await startCamera();
-        startDetectionLoop();
-        statusPill.textContent = 'Camera ready. Show any fingertip to steer your fish.';
-      } catch (e) {
+        detectLoop();
+        statusPill.textContent='Camera ready. Show any fingertip.';
+      }catch(e){
         console.error(e);
-        statusPill.textContent = 'Camera init failed. Press M for mouse control, or use HTTPS/localhost and allow camera.';
-        enableMouseControl();
-        previewBtn.disabled = true;
+        statusPill.textContent='Camera/model failed. Press M for mouse control.';
+        enableMouse();
+        previewBtn.disabled=true;
       }
-
-      // Hide overlay and start game
       startOverlay.classList.add('hidden');
-      playing = true;
-      lastTime = 0;
-
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      player.x = rand(w * 0.2, w * 0.8);
-      player.y = rand(h * 0.3, h * 0.7);
-      player.r = 16;
-      score = 0; level = 1; nextLevelScore = 40;
-      scorePill.textContent = `Score: ${score}`;
-      sizePill.textContent = `Size: ${Math.round(player.r)}`;
-      levelPill.textContent = `Level: ${level}`;
-      fishList.length = 0; bubbles.length = 0;
-      for (let i = 0; i < 6; i++) fishList.push(createFish());
-
-      requestAnimationFrame(loop);
+      playing=true; lastTime=0;
+      const w=canvas.width/(window.devicePixelRatio||1), h=canvas.height/(window.devicePixelRatio||1);
+      player.x=rand(w*0.2,w*0.8); player.y=rand(h*0.3,h*0.7); player.r=16; score=0; level=1; nextLevelScore=40;
+      scorePill.textContent='Score: '+score; sizePill.textContent='Size: '+Math.round(player.r); levelPill.textContent='Level: '+level;
+      fishList.length=0; bubbles.length=0; for(let i=0;i<6;i++) fishList.push(createFish());
+      requestAnimationFrame(function loop(ts){ if(!playing){ return; } if(!paused){ if(!lastTime) lastTime=ts; const dt=ts-lastTime; lastTime=ts; spawnFishIfNeeded(dt); updateFish(dt); updatePlayer(dt); updateBubbles(dt); drawAll(); } requestAnimationFrame(loop); });
     });
 
-    // Pre-seed some fish before starting
-    for (let i = 0; i < 6; i++) fishList.push(createFish());
+    // Ambient DOM bubbles
+    (function(){ for(let i=0;i<8;i++){ const b=document.createElement('div'); b.className='bubble'; b.style.left=rand(0,100)+'vw'; b.style.animationDelay=rand(0,9)+'s'; b.style.opacity=rand(0.35,0.8); b.style.transform='translateY(0) scale('+rand(0.7,1.3)+')'; document.body.appendChild(b); } })();
+
+    // Pre-seed fish
+    for(let i=0;i<6;i++) fishList.push(createFish());
   </script>
 </body>
 </html>
